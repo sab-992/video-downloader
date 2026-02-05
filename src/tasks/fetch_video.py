@@ -13,6 +13,7 @@ class FetchVideo(Task):
         self.__thread_count = thread_count if thread_count >= 1 else 1
 
     def execute(self, thread_id: int) -> Any:
+        session = requests.Session()
         chunk_data = {}
         for track_type, track in self.__video.information().items():
             chunk_data[track_type] = bytearray()
@@ -20,19 +21,20 @@ class FetchVideo(Task):
             work_start = thread_id * work_per_thread
             work_end = min(work_start + work_per_thread - 1, track.size() - 1)
 
-            for start in range(work_start, work_end, DOWNLOAD_CHUNK_SIZE):
-                end = min(start + DOWNLOAD_CHUNK_SIZE, work_end)
+            start = work_start
+            while start <= work_end:
+                end = min(start + DOWNLOAD_CHUNK_SIZE - 1, work_end)
 
                 headers = track.headers()
                 headers["Range"] = f"bytes={start}-{end}"
-                response: requests.Response = requests.get(track.url(), headers=headers)
 
+                response: requests.Response = session.get(track.url(), headers=headers)
                 if response.status_code not in (200, 206):
                     raise Exception(Logger.log(message=f"[{response.status_code}] - Error at byte: {start}", level=Level.ERROR))
 
                 chunk_data[track_type] += response.content
                 Logger.log(message=f"THREAD #{thread_id} downloaded {end}/{work_end} bytes", level=Level.INFO)
+                start = end + 1
 
             Logger.log(message=f"THREAD #{thread_id} finished {track_type} track ({track.size()} bytes)", level=Level.INFO)
-
         return chunk_data

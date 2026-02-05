@@ -2,6 +2,12 @@ class Track:
     def __init__(self, information: dict):
         self.__info = information
 
+    def codec(self) -> str:
+        return ""
+
+    def ext(self) -> str:
+        return self.__info.get("ext", "")
+
     def headers(self) -> dict:
         return self.__info.get("http_headers", {})
 

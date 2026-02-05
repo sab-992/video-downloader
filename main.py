@@ -6,7 +6,7 @@ from src.video.video import Video
 VIDEO_URL = ""
 
 def main():
-    video = Video(VIDEO_URL, "1920x1080")
+    video = Video(VIDEO_URL, "1920x1080", 60)
 
     threads = Threads()
     threads.start_all()
