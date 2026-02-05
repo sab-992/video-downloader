@@ -2,8 +2,8 @@ from pathlib import Path
 
 
 # Logging
-ENABLE_LOGGING: bool = True
-PRINT_TO_STDOUT = True
+ENABLE_LOGGING: bool = False
+PRINT_TO_STDOUT = False
 MAX_LOG_HASH_FILENAME_SIZE = 64
 LOG_FOLDER_PATH = f"{Path(__file__).parent.resolve()}/logs"
 
