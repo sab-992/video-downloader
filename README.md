@@ -1,7 +1,7 @@
 # Youtube-downloader
 A personal project built for me to learn about stream handling, thread pooling, video conversion, and working with external APIs. For educational use only.
 - It is a multithreaded way to download videos from youtube.
-- It uses yt-dlp to get the streaming URLs (mainly cause of the proof of origin tokens).
+- It uses [yt-dlp](https://github.com/yt-dlp/yt-dlp) to get the streaming URLs (mainly cause of the proof of origin tokens).
 - The output WILL be separated into two files (audio and video/frames).
 
 # Disclaimer
