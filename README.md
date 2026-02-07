@@ -1,4 +1,4 @@
-# Youtube-downloader
+# Video-downloader
 A personal project built for me to learn about stream handling, thread pooling, video conversion, and working with external APIs. For educational use only.
 - It is a multithreaded way to download videos from youtube.
 - It uses [yt-dlp](https://github.com/yt-dlp/yt-dlp) to get the streaming URLs (mainly cause of the proof of origin tokens).
@@ -23,8 +23,8 @@ The developer assumes **no liability** for any misuse of this software or for an
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/sab-992/yt.git
-cd youtube-downloader
+git clone https://github.com/sab-992/video-downloader.git
+cd video-downloader
 ```
 
 2. Install dependencies:
