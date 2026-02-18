@@ -3,15 +3,17 @@ from src.utils.logger import Logger, Level
 from src.video.detail.track import Track
 from src.video.detail.audio_track import AudioTrack
 from src.video.detail.video_track import VideoTrack
+from src.utils.settings import RESULT_FOLDER_PATH
 
 
 MB_CONVERSION_MULT = 1000000
 class Video:
-    def __init__(self, url: str, resolution: str, fps: int=None):
+    def __init__(self, url: str, resolution: str):
         self.__url = url
         self.__resolution = resolution
-
-        ydl_opts = { "format": f"bestvideo[height={self.__get_resolution_height(resolution)}]{f"[fps={fps}]" if fps else ""}+bestaudio/best",
+        
+        height = self.__get_resolution_height(resolution)
+        ydl_opts = { "format":  f"bestvideo[height<={height}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<={height}]+bestaudio/best[height<={height}]",
                      "outtmpl": "video.mp4",
                      "quiet": True,
                      "no_warnings": True, }
@@ -58,8 +60,8 @@ class Video:
         for i in range(len(results)):
             audio_merged += results[i]["audio"]
             video_merged += results[i]["video"]
-        audio_path = f"{self.__title}.{self.__video_information["audio"].ext() if not audio_extension else audio_extension}"
-        video_path = f"{self.__title}.{self.__video_information["video"].ext()}"
+        audio_path = f"{RESULT_FOLDER_PATH}/{self.__title}.{self.__video_information["audio"].ext() if not audio_extension else audio_extension}"
+        video_path = f"{RESULT_FOLDER_PATH}/{self.__title}.{self.__video_information["video"].ext()}"
 
         with open(audio_path, "wb") as f:
             f.write(audio_merged)
@@ -69,7 +71,6 @@ class Video:
 
         Logger.log(f"Wrote {len(audio_merged) / MB_CONVERSION_MULT} MB for the AUDIO.")
         Logger.log(f"Wrote {len(video_merged) / MB_CONVERSION_MULT} MB for the VIDEO.")
-        # TODO: write the mp4 file by combining frame data and audio data
 
     def title(self):
         return self.__title
